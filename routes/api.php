@@ -823,6 +823,17 @@ Route::group(
     }
 );
 
+//Route::group(
+//    [
+//        'namespace'  => 'FireflyIII\Api\V1\Controllers\System',
+//        'prefix'     => 'v1/users',
+//        'as'         => 'api.v1.users.',
+//    ],
+//    static function () {
+//        Route::post('', ['uses' => 'UserController@store', 'as' => 'store']);
+//    }
+//);
+
 /**
  * USER
  */

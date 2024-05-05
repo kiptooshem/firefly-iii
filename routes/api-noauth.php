@@ -32,3 +32,5 @@ Route::group(
         Route::get('{cliToken}', ['uses' => 'CronController@cron', 'as' => 'index']);
     }
 );
+
+

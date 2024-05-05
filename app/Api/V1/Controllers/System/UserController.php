@@ -27,6 +27,7 @@ namespace FireflyIII\Api\V1\Controllers\System;
 use FireflyIII\Api\V1\Controllers\Controller;
 use FireflyIII\Api\V1\Requests\System\UserStoreRequest;
 use FireflyIII\Api\V1\Requests\System\UserUpdateRequest;
+use FireflyIII\Events\RegisteredUser;
 use FireflyIII\Exceptions\FireflyException;
 use FireflyIII\Repositories\User\UserRepositoryInterface;
 use FireflyIII\Transformers\UserTransformer;
@@ -161,7 +162,11 @@ class UserController extends Controller
     {
         $data    = $request->getAll();
         $user    = $this->repository->store($data);
+        event(new RegisteredUser($user));
         $manager = $this->getManager();
+
+        $token  = $user->createToken('UserToken', ['*'])->accessToken;
+
 
         // make resource
 
@@ -170,6 +175,7 @@ class UserController extends Controller
         $transformer->setParameters($this->parameters);
 
         $resource = new Item($user, $transformer, 'users');
+        $resource->setMetaValue("access_token", $token);
 
         return response()->json($manager->createData($resource)->toArray())->header('Content-Type', self::CONTENT_TYPE);
     }

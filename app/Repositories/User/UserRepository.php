@@ -365,7 +365,7 @@ class UserRepository implements UserRepositoryInterface
                 'blocked'      => $data['blocked'] ?? false,
                 'blocked_code' => $data['blocked_code'] ?? null,
                 'email'        => $data['email'],
-                'password'     => Str::random(24),
+                'password'     => bcrypt($data['password'] ?? Str::random(24)),
             ]
         );
         $role = $data['role'] ?? '';

@@ -61,6 +61,7 @@ class UserStoreRequest extends FormRequest
 
         return [
             'email'        => $this->convertString('email'),
+            'password'     => $this->convertString('password'),
             'blocked'      => $blocked,
             'blocked_code' => $this->convertString('blocked_code'),
             'role'         => $this->convertString('role'),
