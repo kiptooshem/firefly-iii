@@ -163,7 +163,7 @@ class Amount
      */
     public function getSystemCurrency(): TransactionCurrency
     {
-        return TransactionCurrency::where('code', 'EUR')->first();
+        return TransactionCurrency::where('code', 'KES')->first();
     }
 
     /**
