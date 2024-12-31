@@ -25,6 +25,7 @@ namespace FireflyIII\Api\V1\Controllers\Models\Account;
 
 use FireflyIII\Api\V1\Controllers\Controller;
 use FireflyIII\Api\V1\Requests\Models\Account\StoreRequest;
+use FireflyIII\Models\AccountType;
 use FireflyIII\Repositories\Account\AccountRepositoryInterface;
 use FireflyIII\Transformers\AccountTransformer;
 use Illuminate\Http\JsonResponse;
@@ -72,6 +73,18 @@ class StoreController extends Controller
         $data = $request->getAllAccountData();
         $this->repository->resetAccountOrder();
         $account = $this->repository->store($data);
+
+        $frontPage = app('preferences')->get('frontPageAccounts', [])->data;
+        if(!is_array($frontPage)) {
+            $frontPage = [];
+        }
+
+        if (AccountType::ASSET === $account->accountType->type) {
+            $frontPage[] = $account->id;
+            app('preferences')->set('frontPageAccounts', $frontPage);
+        }
+
+
         $manager = $this->getManager();
 
         /** @var AccountTransformer $transformer */
